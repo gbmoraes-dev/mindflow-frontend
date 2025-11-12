@@ -3,8 +3,6 @@ services:
     image: mindflow-app
     container_name: mindflow_frontend
     restart: unless-stopped
-    environment:
-      MODE: production
     build:
       context: .
       dockerfile: Dockerfile
