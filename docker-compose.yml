@@ -1,0 +1,16 @@
+services:
+  frontend:
+    image: mindflow-app
+    container_name: mindflow_frontend
+    restart: unless-stopped
+    environment:
+      MODE: production
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - MODE=production
+        - VITE_BASE_URL=${VITE_BASE_URL}
+        - VITE_BACKEND_URL=${VITE_BACKEND_URL}
+    ports:
+      - "5173:80"
