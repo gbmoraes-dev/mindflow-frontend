@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as SignUpRouteRouteImport } from './routes/sign-up/route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as SignUpIndexRouteImport } from './routes/sign-up/index'
 import { Route as SignInIndexRouteImport } from './routes/sign-in/index'
 import { Route as SignUpPasswordRouteImport } from './routes/sign-up/password'
@@ -27,6 +28,11 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
 const SignUpRouteRoute = SignUpRouteRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignUpIndexRoute = SignUpIndexRouteImport.update({
@@ -71,6 +77,7 @@ const AuthenticatedCalendarRoute = AuthenticatedCalendarRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/sign-up': typeof SignUpRouteRouteWithChildren
   '/calendar': typeof AuthenticatedCalendarRoute
   '/home': typeof AuthenticatedHomeRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/sign-up/': typeof SignUpIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/calendar': typeof AuthenticatedCalendarRoute
   '/home': typeof AuthenticatedHomeRoute
   '/settings': typeof AuthenticatedSettingsRoute
@@ -93,6 +101,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/sign-up': typeof SignUpRouteRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_authenticated/calendar': typeof AuthenticatedCalendarRoute
@@ -107,6 +116,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/sign-up'
     | '/calendar'
     | '/home'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/sign-up/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/calendar'
     | '/home'
     | '/settings'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/sign-up'
   id:
     | '__root__'
+    | '/'
     | '/sign-up'
     | '/_authenticated'
     | '/_authenticated/calendar'
@@ -141,6 +153,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   SignUpRouteRoute: typeof SignUpRouteRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   SignInIndexRoute: typeof SignInIndexRoute
@@ -160,6 +173,13 @@ declare module '@tanstack/react-router' {
       path: '/sign-up'
       fullPath: '/sign-up'
       preLoaderRoute: typeof SignUpRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sign-up/': {
@@ -256,6 +276,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   SignUpRouteRoute: SignUpRouteRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   SignInIndexRoute: SignInIndexRoute,

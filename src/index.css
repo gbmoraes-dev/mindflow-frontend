@@ -5,6 +5,9 @@
 
 @theme inline {
   --default-font-family: Inter, sans-serif;
+  --font-display: Merriweather, serif;
+
+  --background-image-pattern: url("/background.png");
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
