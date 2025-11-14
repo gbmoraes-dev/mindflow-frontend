@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { CirclePlus } from 'lucide-react'
-import { toast } from 'sonner'
 import { Menu } from '@/components/menu'
 import { Button } from '@/components/ui/button'
 import {
@@ -17,9 +16,15 @@ export const Route = createFileRoute('/_authenticated/home')({
 
 function Home() {
   const { user } = Route.useRouteContext()
+  const navigate = Route.useNavigate()
 
   function handleTodaysWriting() {
-    toast.success('oh yeah!')
+    navigate({
+      to: '/calendar',
+      search: {
+        openModal: true,
+      },
+    })
   }
 
   return (
@@ -29,7 +34,7 @@ function Home() {
       </div>
 
       <div className="flex flex-col items-left pl-5 text-left gap-1 mt-auto md:items-center">
-        <h1 className="text-stone-800 text-4xl md:text-5xl font-bold">
+        <h1 className="text-stone-700 text-4xl md:text-5xl font-bold">
           Bem vindo, {user.name.split(' ')[0]}!
         </h1>
         <span className="text-md text-stone-500 font-semibold">
@@ -51,12 +56,12 @@ function Home() {
           />
           <div className="relative z-10 flex h-full flex-col">
             <CardHeader className="mb-auto pt-5">
-              <CardTitle className="text-center text-xl font-medium">
+              <CardTitle className="text-center text-xl font-medium text-stone-700">
                 Como você está se sentindo hoje?
               </CardTitle>
             </CardHeader>
             <CardContent className="mb-auto pt-5">
-              <p className="text-stone-700">
+              <p className="text-stone-600">
                 Escreva livremente sobre o seu dia. Seus pensamentos são
                 analisados de forma privada por IA para te ajudar a identificar
                 padrões.
