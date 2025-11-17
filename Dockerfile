@@ -1,5 +1,15 @@
 FROM oven/bun:1.3.1 AS base
 
+ARG MODE
+ARG VITE_BASE_URL
+ARG VITE_BACKEND_URL
+ARG VITE_WS_URL
+
+ENV MODE=$MODE
+ENV VITE_BASE_URL=$VITE_BASE_URL
+ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
+ENV VITE_WS_URL=$VITE_WS_URL
+
 WORKDIR /usr/src/app
 
 FROM base AS builder
@@ -7,6 +17,7 @@ FROM base AS builder
 ARG MODE
 ARG VITE_BASE_URL
 ARG VITE_BACKEND_URL
+ARG VITE_WS_URL
 
 COPY package.json bun.lock ./
 
@@ -14,7 +25,7 @@ RUN bun install --frozen-lockfile
 
 COPY . .
 
-RUN MODE=$MODE VITE_BASE_URL=$VITE_BASE_URL VITE_BACKEND_URL=$VITE_BACKEND_URL bun run build
+RUN bun run build
 
 FROM nginx:1.25-alpine AS release
 
