@@ -2,8 +2,8 @@ import { z } from 'zod/v4'
 
 const viteEnvSchema = z.object({
   MODE: z.enum(['development', 'production', 'test']).default('development'),
-  VITE_BASE_URL: z.url(),
-  VITE_BACKEND_URL: z.url(),
+  VITE_BASE_URL: z.string(),
+  VITE_BACKEND_URL: z.string(),
 })
 
 const parsedViteEnv = viteEnvSchema.parse(import.meta.env)
