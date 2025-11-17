@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react'
 import { journalListSchema } from '@/http/schemas/journals'
 import { useJournalStatus } from '@/store/journal-status'
 import { JournalCard } from './journal-card'
+import { env } from '@/env'
 
 export function JournalsList() {
   const { openModalJournalId, setOpenModal, reset } = useJournalStatus()
@@ -14,7 +15,7 @@ export function JournalsList() {
     useSuspenseInfiniteQuery({
       queryKey: ['journals'],
       queryFn: async ({ pageParam }) => {
-        const url = new URL('http://localhost:3333/journal')
+        const url = new URL(`${env.BACKEND_URL}/journal`)
 
         if (pageParam) {
           url.searchParams.set('cursor', pageParam)

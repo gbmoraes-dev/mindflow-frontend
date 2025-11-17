@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from './ui/dialog'
 import { Spinner } from './ui/spinner'
+import { env } from '@/env'
 
 interface WritingJournalProps {
   open: boolean
@@ -39,7 +40,7 @@ export function WritingJournal({
 
   const { mutate } = useMutation({
     mutationFn: async (content: string) => {
-      const response = await fetch('http://localhost:3333/journal', {
+      const response = await fetch(`${env.BACKEND_URL}/journal`, {
         method: 'POST',
         credentials: 'include',
         headers: {

@@ -5,6 +5,7 @@ import { Badge } from './ui/badge'
 import { DialogHeader, DialogTitle } from './ui/dialog'
 import { FieldGroup, FieldSeparator } from './ui/field'
 import { Spinner } from './ui/spinner'
+import { env } from '@/env'
 
 interface JournalDetailsProps {
   id: string
@@ -18,7 +19,7 @@ export function JournalDetails({ id }: JournalDetailsProps) {
   const { data: fetchedData, isLoading } = useQuery({
     queryKey: ['journal', id],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:3333/journal/${id}`, {
+      const response = await fetch(`${env.BACKEND_URL}/journal/${id}`, {
         method: 'GET',
         credentials: 'include',
       })

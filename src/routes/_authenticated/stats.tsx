@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { summaryResponseSchema } from '@/http/schemas/journals'
+import { env } from '@/env'
 
 export const Route = createFileRoute('/_authenticated/stats')({
   component: StatsPage,
@@ -30,7 +31,7 @@ function StatsPage() {
   const { data: summary } = useSuspenseQuery({
     queryKey: ['stats', 'summary', timeRange],
     queryFn: async () => {
-      const url = new URL('http://localhost:3333/insights/summary')
+      const url = new URL(`${env.BACKEND_URL}/insights/summary`)
 
       url.searchParams.set('period', timeRange)
 
