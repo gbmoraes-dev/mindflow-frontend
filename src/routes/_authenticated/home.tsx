@@ -28,7 +28,7 @@ function Home() {
   }
 
   return (
-    <div className="h-screen pt-20 pb-5 flex flex-col">
+    <div className="h-screen pt-20 pb-28 flex flex-col">
       <div className="flex flex-col items-center justify-center">
         <img src="/mindflow.svg" alt="Mindflow" className="" />
       </div>

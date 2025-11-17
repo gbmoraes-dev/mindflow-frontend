@@ -7,7 +7,6 @@ import {
   type LucideIcon,
   Settings,
 } from 'lucide-react'
-import { FieldGroup, FieldSeparator } from '@/components/ui/field'
 import { cn } from '@/lib/utils'
 
 interface NavItem {
@@ -28,12 +27,9 @@ export function Menu() {
   const currentPath = router.location.pathname
 
   return (
-    <div className="mt-auto flex flex-col items-center justify-center gap-4 pt-4 pb-safe">
-      <FieldGroup className="w-95">
-        <FieldSeparator />
-      </FieldGroup>
+    <div className="fixed bottom-0 left-0 right-0 flex flex-col items-center justify-center gap-4 pt-2 pb-safe backdrop-blur-sm bg-stone-50">
       <nav
-        className="flex flex-row gap-15 backdrop-blur-sm px-4 py-2"
+        className="flex flex-row gap-15 px-4 py-2"
         aria-label="Navegação principal"
       >
         {navItems.map((item) => {
