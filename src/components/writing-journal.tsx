@@ -1,8 +1,9 @@
 import { useForm } from '@tanstack/react-form'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { useJournalStatus } from '@/store/journal-status'
 import { Button } from './ui/button'
 import {
   Dialog,
@@ -31,7 +32,12 @@ export function WritingJournal({
   open,
   onOpenChange,
 }: WritingJournalProps) {
-  const { mutate, isPending } = useMutation({
+  const queryClient = useQueryClient()
+
+  const { startSaving, startWaitingForAi, reset, status } = useJournalStatus()
+  const isSaving = status === 'saving'
+
+  const { mutate } = useMutation({
     mutationFn: async (content: string) => {
       const response = await fetch('http://localhost:3333/journal', {
         method: 'POST',
@@ -46,12 +52,15 @@ export function WritingJournal({
 
       return data
     },
-    onSuccess: () => {
+    onSuccess: (journal) => {
       form.reset()
       onOpenChange(false)
+      startWaitingForAi(journal)
+      queryClient.invalidateQueries({ queryKey: ['journals'] })
     },
     onError: () => {
       toast.error('Erro ao criar diário')
+      reset()
     },
   })
 
@@ -63,6 +72,7 @@ export function WritingJournal({
       onChange: validation,
     },
     onSubmit: async ({ value }) => {
+      startSaving()
       mutate(value.content)
     },
   })
@@ -103,7 +113,7 @@ export function WritingJournal({
                     onChange={(e) => field.handleChange(e.target.value)}
                     rows={10}
                     className="resize-none rounded-lg border border-stone-200 bg-stone-50 p-6 leading-relaxed text-stone-700 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                    disabled={isPending}
+                    disabled={isSaving}
                   />
                 </div>
               )}
@@ -111,12 +121,12 @@ export function WritingJournal({
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline" disabled={isPending}>
+              <Button variant="outline" disabled={isSaving}>
                 Cancelar
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isPending} className="bg-teal-500">
-              {isPending && <Spinner />}
+            <Button type="submit" disabled={isSaving} className="bg-teal-500">
+              {isSaving && <Spinner />}
               Salvar
             </Button>
           </DialogFooter>

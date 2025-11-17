@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { journalDetailsSchema } from '@/http/schemas/journals'
+import { useJournalStatus } from '@/store/journal-status'
 import { Badge } from './ui/badge'
+import { DialogDescription, DialogHeader, DialogTitle } from './ui/dialog'
 import { FieldGroup, FieldSeparator } from './ui/field'
 import { Spinner } from './ui/spinner'
 
@@ -9,7 +11,11 @@ interface JournalDetailsProps {
 }
 
 export function JournalDetails({ id }: JournalDetailsProps) {
-  const { data, isLoading } = useQuery({
+  const { status, results, activeJournalId } = useJournalStatus()
+
+  const isNewResult = status === 'showing_results' && activeJournalId === id
+
+  const { data: fetchedData, isLoading } = useQuery({
     queryKey: ['journal', id],
     queryFn: async () => {
       const response = await fetch(`http://localhost:3333/journal/${id}`, {
@@ -21,9 +27,12 @@ export function JournalDetails({ id }: JournalDetailsProps) {
 
       return journalDetailsSchema.parse(data)
     },
+    enabled: !isNewResult,
   })
 
-  if (isLoading) {
+  const data = isNewResult ? results : fetchedData
+
+  if (isLoading && !isNewResult) {
     return (
       <div className="flex items-center justify-center py-8">
         <Spinner />
@@ -35,14 +44,18 @@ export function JournalDetails({ id }: JournalDetailsProps) {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold text-stone-700">
-        Seu diário de{' '}
-        {data.createdAt.toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric',
-        })}
-      </h2>
+      <DialogHeader>
+        <DialogTitle>
+          <p className="text-2xl font-bold text-stone-700 text-center">
+            Seu diário de{' '}
+            {new Date(data.createdAt).toLocaleDateString('pt-BR', {
+              day: '2-digit',
+              month: 'long',
+              year: 'numeric',
+            })}
+          </p>
+        </DialogTitle>
+      </DialogHeader>
 
       <div className="rounded-lg border border-stone-200 bg-stone-50 p-6">
         <p className="whitespace-pre-wrap leading-relaxed text-stone-700">

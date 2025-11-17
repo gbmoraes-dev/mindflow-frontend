@@ -1,9 +1,12 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
 import { journalListSchema } from '@/http/schemas/journals'
+import { useJournalStatus } from '@/store/journal-status'
 import { JournalCard } from './journal-card'
 
 export function JournalsList() {
+  const { openModalJournalId, setOpenModal, reset } = useJournalStatus()
+
   const loadMoreRef = useRef<HTMLDivElement>(null)
   const observerRef = useRef<IntersectionObserver | null>(null)
 
@@ -66,9 +69,22 @@ export function JournalsList() {
   return (
     <>
       {journals.map((journal) => (
-        <JournalCard key={journal.id} journal={journal} />
+        <JournalCard
+          key={journal.id}
+          journal={{
+            ...journal,
+            open: openModalJournalId === journal.id,
+            onOpenChange: (open) => {
+              if (open) {
+                setOpenModal(journal.id)
+              } else {
+                setOpenModal(null)
+                reset()
+              }
+            },
+          }}
+        />
       ))}
-
       <div ref={loadMoreRef} className="col-span-2 md:col-span-3" />
       {isFetchingNextPage && (
         <div className="col-span-2 md:col-span-3 text-center text-muted-foreground">
