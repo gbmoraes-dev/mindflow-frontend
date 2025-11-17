@@ -8,6 +8,7 @@ import { Button } from '../../components/ui/button'
 import { FieldGroup, FieldSeparator } from '../../components/ui/field'
 import { Input } from '../../components/ui/input'
 import { useSignUpData } from './route'
+import { env } from '@/env'
 
 const validation = z.object({
   email: z.email('Por favor, insira um email válido'),
@@ -48,7 +49,7 @@ function SignUp() {
   async function handleSocialSignIn(provider: 'google' | 'github') {
     await auth.signIn.social({
       provider,
-      callbackURL: 'http://localhost:5173/home',
+      callbackURL: `${env.BASE_URL}/home`,
     })
   }
 

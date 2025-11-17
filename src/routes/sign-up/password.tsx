@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { auth } from '@/lib/auth'
 import { useSignUpData } from './route'
+import { env } from '@/env'
 
 const validation = z.object({
   password: z
@@ -71,7 +72,7 @@ function SignUpPassword() {
       name,
       email,
       password,
-      callbackURL: 'http://localhost:5173/home',
+      callbackURL: `${env.BASE_URL}/home`,
     })
 
     if (error) {

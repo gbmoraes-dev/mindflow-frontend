@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { FieldGroup, FieldSeparator } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { auth } from '@/lib/auth'
+import { env } from '@/env'
 
 const signInSchema = z.object({
   email: z.email('Por favor, insira um email válido'),
@@ -50,7 +51,7 @@ function SignIn() {
   async function handleSocialSignIn(provider: 'google' | 'github') {
     await auth.signIn.social({
       provider,
-      callbackURL: 'http://localhost:5173/home',
+      callbackURL: `${env.BASE_URL}/home`,
     })
   }
 
@@ -58,7 +59,7 @@ function SignIn() {
     const { error } = await auth.signIn.email({
       email,
       password,
-      callbackURL: 'http://localhost:5173/home',
+      callbackURL: `${env.BASE_URL}/home`,
     })
 
     if (error) {
