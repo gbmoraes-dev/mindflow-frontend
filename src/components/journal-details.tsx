@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { journalDetailsSchema } from '@/http/schemas/journals'
 import { useJournalStatus } from '@/store/journal-status'
 import { Badge } from './ui/badge'
-import { DialogDescription, DialogHeader, DialogTitle } from './ui/dialog'
+import { DialogHeader, DialogTitle } from './ui/dialog'
 import { FieldGroup, FieldSeparator } from './ui/field'
 import { Spinner } from './ui/spinner'
 

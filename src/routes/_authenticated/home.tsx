@@ -33,7 +33,7 @@ function Home() {
         <img src="/mindflow.svg" alt="Mindflow" className="" />
       </div>
 
-      <div className="flex flex-col items-left pl-5 text-left gap-1 mt-auto md:items-center">
+      <div className="flex flex-col items-left pl-5 text-left gap-1 pt-15 md:items-center">
         <h1 className="text-stone-700 text-4xl md:text-5xl font-bold">
           Bem vindo, {user.name.split(' ')[0]}!
         </h1>
@@ -47,7 +47,7 @@ function Home() {
         </span>
       </div>
 
-      <div className="flex flex-col items-center justify-center mt-auto">
+      <div className="flex flex-col items-center justify-center pt-25">
         <Card className="w-85 h-100 relative overflow-hidden">
           <img
             src="/effect.svg"

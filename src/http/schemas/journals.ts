@@ -35,3 +35,20 @@ export const journalSchema = z.object({
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 })
+
+export const summaryResponseSchema = z.object({
+  sentimentHistory: z.array(
+    z.object({
+      date: z.string(),
+      positive: z.number(),
+      negative: z.number(),
+      neutral: z.number(),
+    }),
+  ),
+  recurringTopics: z.array(
+    z.object({
+      topic: z.string(),
+      count: z.number(),
+    }),
+  ),
+})
