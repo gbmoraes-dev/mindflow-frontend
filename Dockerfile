@@ -4,17 +4,13 @@ WORKDIR /usr/src/app
 
 FROM base AS builder
 
-ARG MODE
-ARG VITE_BASE_URL
-ARG VITE_BACKEND_URL
-
 COPY package.json bun.lock ./
 
 RUN bun install --frozen-lockfile
 
 COPY . .
 
-RUN MODE=$MODE VITE_BASE_URL=$VITE_BASE_URL VITE_BACKEND_URL=$VITE_BACKEND_URL bun run build
+RUN bun run build
 
 FROM nginx:1.25-alpine AS release
 
