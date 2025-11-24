@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { useJournalStatus } from '@/store/journal-status'
-import { env } from '@/env'
 
 interface WebSocketProps {
   journalId: string
@@ -10,7 +9,7 @@ export function useWebSocketListener({ journalId }: WebSocketProps) {
   const { showResults, reset } = useJournalStatus()
 
   useEffect(() => {
-    const ws = new WebSocket(`${env.WS_URL}/ws/journal/${journalId}`)
+    const ws = new WebSocket(`http://localhost:3333/ws/journal/${journalId}`)
 
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data)
